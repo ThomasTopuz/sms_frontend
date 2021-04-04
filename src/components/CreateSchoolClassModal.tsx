@@ -1,69 +1,101 @@
-import React, {useState} from 'react';
-import {
-    Button,
-    Card,
-    CardHeader,
-    CardBody,
-    FormGroup,
-    Form,
-    Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
-    Modal,
-    Row,
-    Col
-} from "reactstrap";
+import React, { useEffect, useState } from "react";
+import { Dropdown } from 'primereact/dropdown';
+import { Dialog } from 'primereact/dialog';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import Person from "../models/Person";
+import axios, { AxiosResponse } from "axios";
+import BASE_URL from "../config/ApiConfig";
 
 interface props {
-    onSubmit:any,
-    isOpen: boolean
+    onSubmit: any;
+    isOpen: boolean;
+    onClose: any;
 }
 
-const CreateSchoolClassModal:React.FC<props> = ({isOpen, onSubmit}) => {
+const cities = [
+    { name: 'New York', code: 'NY' },
+    { name: 'Rome', code: 'RM' },
+    { name: 'London', code: 'LDN' },
+    { name: 'Istanbul', code: 'IST' },
+    { name: 'Paris', code: 'PRS' }
+];
+
+const CreateSchoolClassModal: React.FC<props> = ({
+    isOpen,
+    onSubmit,
+    onClose,
+}) => {
+    const [teacher, setTeacher] = useState<Person | null>(null);
+    const [className, setClassName] = useState("");
+    const [teachersList, setTeachersList] = useState<Person[]>([]);
+
+    useEffect(() => {
+        // fetch all the teachers, to select for the new class
+        axios.get(`${BASE_URL}/teacher`)
+            .then((res: AxiosResponse<Person[]>) => {
+                console.log(res.data);
+                setTeachersList(res.data);
+            }).catch(err => console.log(err));
+    }, []);
+
+    const selectedTeacherTemplate = (option: Person, props: any) => {
+        if (option) {
+            return (
+                <div>
+                    <span>{option.name} {option.surname}</span>
+                </div>
+            );
+        }
         return (
-            <>
-                {/* Modal */}
-                <Modal
-                    className="modal-dialog-centered"
-                    isOpen={isOpen}
-                    toggle={() => setIsOpen(!isOpen)}
-                >
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">
-                            Modal title
-                        </h5>
-                        <button
-                            aria-label="Close"
-                            className="close"
-                            data-dismiss="modal"
-                            type="button"
-                            onClick={() => isOpen = false}
-                        >
-                            <span aria-hidden={true}>×</span>
-                        </button>
-                    </div>
-                    <div className="modal-body">this is the body</div>
-                    <div className="modal-footer">
-                        <Button
-                            color="secondary"
-                            data-dismiss="modal"
-                            type="button"
-                            onClick={() => isOpen = false}
-                        >
-                            Close
-                        </Button>
-                        <Button 
-                            color="primary" 
-                            type="button"
-                            onClick={()=>onSubmit()}
-                            >
-                            Submit
-                        </Button>
-                    </div>
-                </Modal>
-            </>
+            <span>
+                {props.placeholder}
+            </span>
         );
-}
+    }
+
+    const teacherOptionTemplate = (option: Person) => {
+        return (
+            <div className="row border-bottom">
+                <span>{option.name} {option.surname}, {option.email}</span>
+            </div>
+        );
+    }
+    return (
+        <div>
+            <Dialog className={""} header="Create new school class" visible={isOpen} style={{ width: '35vw' }}
+                onHide={() => onClose()}>
+                <div className="">
+                    <h5>
+                        Fill the form
+                    </h5>
+                </div>
+                <div className="mr-2">
+                    <InputText className={"m-2 w-100"} placeholder={"School Class name"} value={className}
+                        onChange={(e: any) => setClassName(e.target.value)} />
+                    <br />
+                    <Dropdown className={"m-2 w-100"} filter showClear filterBy="name" optionLabel="name" valueTemplate={selectedTeacherTemplate}
+                        value={teacher} options={teachersList} onChange={(e) => setTeacher(e.value)}
+                        placeholder="Select a teacher" itemTemplate={teacherOptionTemplate}
+                    />
+
+                </div>
+                <div className={"row mr-2 ml-2 justify-content-between"}>
+                    <Button
+                        className="p-button-secondary"
+                        data-dismiss="modal"
+                        type="button"
+                        onClick={onClose}
+                    >
+                        Close
+                    </Button>
+                    <Button className="p-button-success" type="button" onClick={onSubmit}>
+                        Submit
+                    </Button>
+                </div>
+            </Dialog>
+        </div>
+    );
+};
 
 export default CreateSchoolClassModal;
