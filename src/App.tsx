@@ -8,22 +8,25 @@ import SchoolClassDetails from "./pages/SchoolClassDetails";
 function App() {
   return (
     <div>
-      <Navbar />
       <BrowserRouter>
-        <Switch>
 
+        <Navbar />
+        <Switch>
           <Route exact path="/schoolclass/details/:id">
             <SchoolClassDetails />
           </Route>
           <Route exact path="/">
             <SchoolClassesPage />
           </Route>
-
           <Route exact path="/students">
-            <p>ciao</p>
+            <p>students</p>
           </Route>
+          <Route exact path="/teachers">
+            <p>teachers</p>
+          </Route>
+
         </Switch>
-      </BrowserRouter>,
+      </BrowserRouter>
     </div>
   );
 }

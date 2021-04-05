@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { TabMenu } from 'primereact/tabmenu';
 import { useHistory } from 'react-router-dom';
 const items = [
-  { label: 'School classes', icon: 'pi pi-fw pi-home', url: '/' },
-  { label: 'Teachers', icon: 'pi pi-fw pi-calendar', url: 'teachers' },
-  { label: 'Students', icon: 'pi pi-fw pi-pencil', url: 'students' }
+  { label: 'School classes', icon: 'pi pi-fw pi-home', target: '/' },
+  { label: 'Teachers', icon: 'pi pi-fw pi-calendar', target: 'teachers' },
+  { label: 'Students', icon: 'pi pi-fw pi-pencil', target: 'students' }
 ];
 const NavBar: React.FC<any> = () => {
   const [activeItem, setActiveItem] = useState(items[0]);
@@ -13,6 +13,7 @@ const NavBar: React.FC<any> = () => {
   return (
     <TabMenu model={items} activeItem={activeItem} onTabChange={(e) => {
       setActiveItem(e.value);
+      history.push(e.value.target);
     }} />
   );
 }
