@@ -1,6 +1,5 @@
 import React from "react";
-import IconButton from "./IconButton";
-import {Paper} from "@material-ui/core";
+import { Button } from 'primereact/button';
 
 interface props {
     id: number,
@@ -9,9 +8,9 @@ interface props {
     goToDetailsHandler: Function
 }
 
-const Card: React.FC<props> = ({id, title, secondaryText, goToDetailsHandler}) => {
+const Card: React.FC<props> = ({ id, title, secondaryText, goToDetailsHandler }) => {
     return (
-        <Paper elevation={5} className="mb-2 mt-2">
+        <div className="box p-shadow-4 mb-3 mt-2">
             <div className="card-body">
                 <div className={"container"}>
                     <div className={"row"}>
@@ -19,13 +18,11 @@ const Card: React.FC<props> = ({id, title, secondaryText, goToDetailsHandler}) =
                     </div>
                     <div className={"row justify-content-between"}>
                         <p className="card-text">{secondaryText}</p>
-                        <IconButton onClickHandler={() => {
-                            goToDetailsHandler(id);
-                        }} text={"Details"} iconName={"ni ni-bold-right"}/>
+                        <Button onClick={() => goToDetailsHandler(id)} iconPos="right" label="Info" icon="pi pi-arrow-circle-right" className="p-button-info" />
                     </div>
                 </div>
             </div>
-        </Paper>
+        </div>
     );
 }
 

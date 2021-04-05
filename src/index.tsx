@@ -6,12 +6,14 @@ import reportWebVitals from './reportWebVitals';
 import PrimeReact from 'primereact/api';
 
 
-import '../node_modules/primereact/resources/themes/bootstrap4-light-blue/theme.css';
+import '../node_modules/primereact/resources/themes/md-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import './assets/primeflex.min.css';
+
 PrimeReact.ripple = true;
 ReactDOM.render(
-    <App />,
+  <App />,
   document.getElementById('root')
 );
 

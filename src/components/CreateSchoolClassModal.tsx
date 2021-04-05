@@ -6,20 +6,13 @@ import { Button } from 'primereact/button';
 import Person from "../models/Person";
 import axios, { AxiosResponse } from "axios";
 import BASE_URL from "../config/ApiConfig";
+import SchoolClassResponse from "../models/responseTypes/SchoolClass";
 
 interface props {
     onSubmit: any;
     isOpen: boolean;
     onClose: any;
 }
-
-const cities = [
-    { name: 'New York', code: 'NY' },
-    { name: 'Rome', code: 'RM' },
-    { name: 'London', code: 'LDN' },
-    { name: 'Istanbul', code: 'IST' },
-    { name: 'Paris', code: 'PRS' }
-];
 
 const CreateSchoolClassModal: React.FC<props> = ({
     isOpen,
@@ -41,11 +34,12 @@ const CreateSchoolClassModal: React.FC<props> = ({
 
     function createSchoolClass() {
         axios.post(`${BASE_URL}/schoolclass`, { name: className, teacherId: teacher?.id })
-            .then((data) => {
-                onSubmit();
+            .then((res: AxiosResponse<SchoolClassResponse[]>) => {
+                onSubmit(res.data);
             })
             .catch(err => console.log(err));
     }
+
     const selectedTeacherTemplate = (option: Person, props: any) => {
         if (option) {
             return (
@@ -88,14 +82,14 @@ const CreateSchoolClassModal: React.FC<props> = ({
                 </div>
                 <div className={"row mr-2 ml-2 justify-content-between"}>
                     <Button
-                        className="p-button-secondary"
+                        className="p-button-danger"
                         data-dismiss="modal"
                         type="button"
                         onClick={onClose}
                     >
                         Close
                     </Button>
-                    <Button className="p-button-success" type="button" onClick={createSchoolClass}>
+                    <Button className="p-button-primary" type="button" onClick={createSchoolClass}>
                         Submit
                     </Button>
                 </div>
