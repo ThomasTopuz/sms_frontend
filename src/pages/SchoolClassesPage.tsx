@@ -1,10 +1,9 @@
 import BoxedPage from "../components/BoxedPage";
-import { Button, Spinner, Alert } from "reactstrap";
+import { Spinner, Alert } from "reactstrap";
 import React, { useEffect, useState } from "react";
 import SchoolClassResponse from "../models/responseTypes/SchoolClass";
 import axios, { AxiosResponse } from "axios";
 import BASE_URL from "../config/ApiConfig";
-import { Paper } from "@material-ui/core";
 import IconButton from "../components/IconButton";
 import Card from "../components/Card";
 import CreateSchoolClassModal from "../components/CreateSchoolClassModal";
@@ -75,7 +74,7 @@ const SchoolClassesPage = (props: any) => {
         <CreateSchoolClassModal
           onClose={() => setIsModalOpen(false)}
           isOpen={isModalOpen}
-          onSubmit={(data) => console.log(data)}
+          onSubmit={() => setIsModalOpen(false)}
         />
       )}
     </BoxedPage>

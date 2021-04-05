@@ -27,11 +27,11 @@ const CreateSchoolClassModal: React.FC<props> = ({
     onClose,
 }) => {
     const [teacher, setTeacher] = useState<Person | null>(null);
-    const [className, setClassName] = useState("");
+    const [className, setClassName] = useState<string>("");
     const [teachersList, setTeachersList] = useState<Person[]>([]);
 
+    // fetch all the teachers, for the dropdown
     useEffect(() => {
-        // fetch all the teachers, to select for the new class
         axios.get(`${BASE_URL}/teacher`)
             .then((res: AxiosResponse<Person[]>) => {
                 console.log(res.data);
@@ -39,6 +39,13 @@ const CreateSchoolClassModal: React.FC<props> = ({
             }).catch(err => console.log(err));
     }, []);
 
+    function createSchoolClass() {
+        axios.post(`${BASE_URL}/schoolclass`, { name: className, teacherId: teacher?.id })
+            .then((data) => {
+                onSubmit();
+            })
+            .catch(err => console.log(err));
+    }
     const selectedTeacherTemplate = (option: Person, props: any) => {
         if (option) {
             return (
@@ -78,7 +85,6 @@ const CreateSchoolClassModal: React.FC<props> = ({
                         value={teacher} options={teachersList} onChange={(e) => setTeacher(e.value)}
                         placeholder="Select a teacher" itemTemplate={teacherOptionTemplate}
                     />
-
                 </div>
                 <div className={"row mr-2 ml-2 justify-content-between"}>
                     <Button
@@ -89,7 +95,7 @@ const CreateSchoolClassModal: React.FC<props> = ({
                     >
                         Close
                     </Button>
-                    <Button className="p-button-success" type="button" onClick={onSubmit}>
+                    <Button className="p-button-success" type="button" onClick={createSchoolClass}>
                         Submit
                     </Button>
                 </div>
