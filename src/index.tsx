@@ -9,7 +9,7 @@ import PrimeReact from 'primereact/api';
 import '../node_modules/primereact/resources/themes/md-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import './assets/primeflex.min.css';
+import './assets/bootstrap.min.css';
 
 PrimeReact.ripple = true;
 ReactDOM.render(

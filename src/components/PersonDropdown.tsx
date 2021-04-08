@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import Person from '../models/Person'
-import { Dropdown } from 'primereact/dropdown';
+import {Dropdown} from 'primereact/dropdown';
 
 interface props {
     items: Person[],
-    onChange: any
+    onChange: any,
+    className?: string
 
 }
-const PersonDropdown: React.FC<props> = ({ items, onChange }) => {
+
+const PersonDropdown: React.FC<props> = ({items, onChange, className}) => {
     const [selectedItem, setSelectedItem] = useState<Person>();
 
     const selectedOptionTemplate = (option: Person, props: any) => {
         if (option) {
             return (
-                <div >
+                <div>
                     <span>{option.name} {option.surname}</span>
                 </div>
             );
@@ -27,19 +29,20 @@ const PersonDropdown: React.FC<props> = ({ items, onChange }) => {
 
     const teacherOptionTemplate = (option: Person) => {
         return (
-            <div className="p-1 row">
-                <span>{option.name} {option.surname}</span>
+            <div className="p-1 pl-2 row">
+                <span>{option.name} {option.surname}, {option.email}</span>
             </div>
         );
     }
     return (
         <div>
-            <Dropdown className={" w-100"} filter showClear filterBy="name" optionLabel="name" valueTemplate={selectedOptionTemplate}
-                value={selectedItem} options={items} onChange={(e) => {
-                    setSelectedItem(e.value);
-                    onChange(e.value);
-                }}
-                placeholder="Select a teacher" itemTemplate={teacherOptionTemplate}
+            <Dropdown className={`w-100 ${className}`} filter showClear filterBy="name" optionLabel="name"
+                      valueTemplate={selectedOptionTemplate}
+                      value={selectedItem} options={items} onChange={(e) => {
+                setSelectedItem(e.value);
+                onChange(e.value);
+            }}
+                      placeholder="Select a teacher" itemTemplate={teacherOptionTemplate}
             />
         </div>
     )

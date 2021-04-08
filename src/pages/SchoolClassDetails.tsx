@@ -1,21 +1,22 @@
-import axios, { AxiosResponse } from 'axios';
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import axios, {AxiosResponse} from 'axios';
+import React, {useEffect, useState} from 'react'
+import {useHistory, useParams} from 'react-router-dom';
 import BoxedPage from '../components/BoxedPage';
-import StudentCard from '../components/StudentCard';
+import PersonCard from '../components/PersonCard';
 import TeacherFacet from '../components/TeacherFacet';
 import BASE_URL from '../config/ApiConfig';
 import Person from '../models/Person';
 import SchoolClassResponse from '../models/responseTypes/SchoolClass';
-import { Button } from 'primereact/button';
+import {Button} from 'primereact/button';
 import PersonDropdown from '../components/PersonDropdown';
 
 export default function SchoolClassDetails(props) {
-    const { id } = useParams<any>(); // catch the url paam
+    const {id} = useParams<any>(); // catch the url paam
     const [loading, setLoading] = useState<boolean>(true);
     const [schoolClass, setScholClass] = useState<SchoolClassResponse>();
     const [studentList, setStudentList] = useState<Person[]>([]);
     const [studentToAdd, setStudentToAdd] = useState<Person>();
+    let history = useHistory();
 
     useEffect(() => {
         // call the api to GET the current schoolclass
@@ -24,7 +25,7 @@ export default function SchoolClassDetails(props) {
                 setScholClass(res.data);
                 setLoading(false);
             })
-            .catch(err => console.log(err));
+            .catch(err => history.push("/"));
         axios.get(`${BASE_URL}/student`)
             .then(res => {
                 setStudentList(res.data);
@@ -36,11 +37,12 @@ export default function SchoolClassDetails(props) {
         axios.put(`${BASE_URL}/schoolclass/${schoolClass?.id}/removestudent/${id}`)
             .then((res: AxiosResponse<Person>) => {
                 let studentsFiltered: Person[] | undefined = schoolClass?.students.filter(student => student.id !== id);
-                let newSchoolClass = { ...schoolClass!, students: studentsFiltered! };
+                let newSchoolClass = {...schoolClass!, students: studentsFiltered!};
                 setScholClass(newSchoolClass);
                 setLoading(false);
             }).catch(err => console.log(err));
     }
+
     function addStudent() {
         console.log(studentToAdd)
         axios.put(`${BASE_URL}/schoolclass/${schoolClass?.id}/addstudent/${studentToAdd?.id}`)
@@ -49,34 +51,53 @@ export default function SchoolClassDetails(props) {
             })
             .catch(err => console.log(err));
     }
+
     return (
         <BoxedPage>
-            <h1>{schoolClass?.name}</h1>
-            <div className="p-grid">
-                <div className="p-col-12 p-md-3">
+            <div>
+                {!loading && <div>
+                    <h1>{schoolClass?.name}</h1>
+                    <div className="container row justify-content-between">
+                        <div className="col-md-3">
 
-                    <h3 className="mt-3">Teacher</h3>
-                    <div >
-                        {schoolClass?.teacher &&
-                            <TeacherFacet teacher={schoolClass.teacher} />
-                        }
+                            <h3 className="mt-3 mb-4">Teacher</h3>
+                            <div className={"rounded"}>
+                                {schoolClass?.teacher &&
+                                <TeacherFacet teacher={schoolClass.teacher}/>
+                                }
+                            </div>
+                        </div>
+                        <div className=" col-md-8">
+                            <div className="row align-items-start mb-3">
+                                <h3 className="mt-3 mr-1">Students</h3>
+                                <PersonDropdown items={studentList} onChange={(student) => setStudentToAdd(student)}/>
+                                <Button onClick={addStudent} icon="pi pi-user-plus"
+                                        className="float-right ml-1 p-button-raised p-button-primary p-button-rounded"/>
+                            </div>
+                            <div>
+                                {schoolClass!.students.length > 0 ?
+                                    <div>{
+                                        schoolClass?.students.map((student: Person) => {
+                                            return <PersonCard key={student.id} actionButton={{
+                                                click: removeStudent,
+                                                label: "remove",
+                                                icon: "pi pi-user-minus",
+                                                className: "p-button-danger"
+                                            }} person={student}/>
+                                        })
+                                    }</div> :
+                                    <div className="alert alert-primary" role="alert">
+                                        No students for this school class
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div className="p-col-12 p-md-9 mt-3">
-                    <div className="row justify-content-start align-items-center mb-1">
-                        <h3 className="mt-3 mr-1">Students</h3>
-                        <PersonDropdown items={studentList} onChange={(student) => setStudentToAdd(student)} />
-                        <Button onClick={addStudent} icon="pi pi-user-plus" className="float-right p-button-raised p-button-primary p-button-rounded" />
-                    </div>
-                    <div>
-                        {
-                            schoolClass?.students.map((student) => {
-                                return <StudentCard key={student.id} onDelete={removeStudent} student={student} />
-                            })
-                        }
-                    </div>
-                </div>
+                </div>}
+
             </div>
+
         </BoxedPage>
     )
 }

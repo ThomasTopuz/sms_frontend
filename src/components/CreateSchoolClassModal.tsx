@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Dropdown } from 'primereact/dropdown';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
+import React, {useEffect, useState} from "react";
+import {Dialog} from 'primereact/dialog';
+import {InputText} from 'primereact/inputtext';
+import {Button} from 'primereact/button';
 import Person from "../models/Person";
-import axios, { AxiosResponse } from "axios";
+import axios, {AxiosResponse} from "axios";
 import BASE_URL from "../config/ApiConfig";
 import SchoolClassResponse from "../models/responseTypes/SchoolClass";
+import PersonDropdown from "./PersonDropdown";
 
 interface props {
     onSubmit: any;
@@ -15,10 +15,10 @@ interface props {
 }
 
 const CreateSchoolClassModal: React.FC<props> = ({
-    isOpen,
-    onSubmit,
-    onClose,
-}) => {
+                                                     isOpen,
+                                                     onSubmit,
+                                                     onClose,
+                                                 }) => {
     const [teacher, setTeacher] = useState<Person | null>(null);
     const [className, setClassName] = useState<string>("");
     const [teachersList, setTeachersList] = useState<Person[]>([]);
@@ -33,68 +33,33 @@ const CreateSchoolClassModal: React.FC<props> = ({
     }, []);
 
     function createSchoolClass() {
-        axios.post(`${BASE_URL}/schoolclass`, { name: className, teacherId: teacher?.id })
+        axios.post(`${BASE_URL}/schoolclass`, {name: className, teacherId: teacher?.id})
             .then((res: AxiosResponse<SchoolClassResponse[]>) => {
                 onSubmit(res.data);
             })
             .catch(err => console.log(err));
     }
-
-    const selectedTeacherTemplate = (option: Person, props: any) => {
-        if (option) {
-            return (
-                <div>
-                    <span>{option.name} {option.surname}</span>
-                </div>
-            );
-        }
-        return (
-            <span>
-                {props.placeholder}
-            </span>
-        );
-    }
-
-    const teacherOptionTemplate = (option: Person) => {
-        return (
-            <div className="row border-bottom">
-                <span>{option.name} {option.surname}, {option.email}</span>
-            </div>
-        );
-    }
     return (
-        <div>
-            <Dialog className={""} header="Create new school class" visible={isOpen} style={{ width: '35vw' }}
+        <Dialog className="w-50" header="Create new school class" visible={isOpen} style={{width: '35vw'}}
                 onHide={() => onClose()}>
-                <div className="">
-                    <h5>
-                        Fill the form
-                    </h5>
-                </div>
-                <div className="mr-2">
-                    <InputText className={"m-2 w-100"} placeholder={"School Class name"} value={className}
-                        onChange={(e: any) => setClassName(e.target.value)} />
-                    <br />
-                    <Dropdown className={"m-2 w-100"} filter showClear filterBy="name" optionLabel="name" valueTemplate={selectedTeacherTemplate}
-                        value={teacher} options={teachersList} onChange={(e) => setTeacher(e.value)}
-                        placeholder="Select a teacher" itemTemplate={teacherOptionTemplate}
-                    />
-                </div>
-                <div className={"row mr-2 ml-2 justify-content-between"}>
-                    <Button
-                        className="p-button-danger"
-                        data-dismiss="modal"
-                        type="button"
-                        onClick={onClose}
-                    >
-                        Close
-                    </Button>
-                    <Button className="p-button-primary" type="button" onClick={createSchoolClass}>
-                        Submit
-                    </Button>
-                </div>
-            </Dialog>
-        </div>
+            <div className="">
+                <h5>
+                    Fill the form
+                </h5>
+            </div>
+            <div className="mr-2">
+                <InputText className={"mb-2 w-100"} placeholder={"School Class name"} value={className}
+                           onChange={(e: any) => setClassName(e.target.value)}/>
+                <br/>
+                <PersonDropdown className={"mb-2"} items={teachersList}
+                                onChange={(teacher: Person) => setTeacher(teacher)}/>
+            </div>
+            <div className={"row mr-2 ml-2 justify-content-end"}>
+                <Button className="p-button-primary" type="button" onClick={createSchoolClass}>
+                    Submit
+                </Button>
+            </div>
+        </Dialog>
     );
 };
 
