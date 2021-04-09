@@ -6,6 +6,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import SchoolClassDetails from "./pages/SchoolClass/SchoolClassDetails";
 import TeachersPage from "./pages/Teacher/TeachersPage";
 import TeacherDetails from "./pages/Teacher/TeacherDetails";
+import StudentsPage from "./pages/Student/StudentsPage";
+import StudentDetails from "./pages/Student/StudentDetails";
 
 function App() {
     return (
@@ -18,11 +20,15 @@ function App() {
                 <Route exact path="/teachers/:id">
                     <TeacherDetails />
                 </Route>
+
+                <Route exact path="/students/:id">
+                    <StudentDetails />
+                </Route>
                 <Route exact path="/">
                     <SchoolClassesPage />
                 </Route>
                 <Route exact path="/students">
-                    <p>students</p>
+                    <StudentsPage />
                 </Route>
                 <Route exact path="/teachers">
                     <TeachersPage />

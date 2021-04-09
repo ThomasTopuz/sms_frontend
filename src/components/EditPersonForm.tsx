@@ -27,7 +27,7 @@ const EditPersonForm: React.FC<props> = ({ person, onSubmit }) => {
                     control={control}
                     defaultValue={person.name}
                     rules={{ required: true, minLength: 3, maxLength: 255 }}
-                    render={({ field }) => <InputText {...field} inputRef={register("name")} name={"name"}
+                    render={({ field }) => <InputText {...field} inputref={register("name")} name={"name"}
                         placeholder="Name"
                         className={"mr-2"} />}
                 />
@@ -36,7 +36,7 @@ const EditPersonForm: React.FC<props> = ({ person, onSubmit }) => {
                     control={control}
                     defaultValue={person.surname}
                     rules={{ required: true, minLength: 3, maxLength: 255 }}
-                    render={({ field }) => <InputText {...field} inputRef={register("surname")} name={"surname"}
+                    render={({ field }) => <InputText {...field} inputref={register("surname")} name={"surname"}
                         placeholder="suname" />}
                 />
             </div>
@@ -47,7 +47,7 @@ const EditPersonForm: React.FC<props> = ({ person, onSubmit }) => {
                     control={control}
                     defaultValue={person.email}
                     rules={{ required: true, minLength: 3, maxLength: 255 }}
-                    render={({ field }) => <InputText {...field} inputRef={register("email")} name={"email"}
+                    render={({ field }) => <InputText {...field} inputref={register("email")} name={"email"}
                         placeholder="email" className={"col-12"} />}
                 />
             </div>

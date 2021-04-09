@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import PrimeReact from 'primereact/api';
 
 
-import '../node_modules/primereact/resources/themes/mdc-light-indigo/theme.css';
+import '../node_modules/primereact/resources/themes/bootstrap4-light-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import './assets/bootstrap.min.css';

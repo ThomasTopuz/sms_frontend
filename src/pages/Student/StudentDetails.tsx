@@ -14,7 +14,7 @@ import EditToggleButton from '../../components/common/EditToggleButton';
 
 const TeacherDetails: React.FC = () => {
     const { id } = useParams<any>();
-    const [teacher, setTeacher] = useState<Person>();
+    const [student, setStudent] = useState<Person>();
     const [schoolClasses, setSchoolClasses] = useState<SchoolClass[]>([]);
     const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -26,21 +26,21 @@ const TeacherDetails: React.FC = () => {
     }, []);
 
     const fetchTeacherById = (): void => {
-        axios.get(`${BASE_URL}/teacher/${id}`)
+        axios.get(`${BASE_URL}/student/${id}`)
             .then((res: AxiosResponse<Person>) => {
-                setTeacher(res.data);
+                setStudent(res.data);
             }).catch(err => console.log(err));
     }
     const fetchTeacherSchoolClasses = (): void => {
-        axios.get(`${BASE_URL}/teacher/${id}/schoolclasses`)
+        axios.get(`${BASE_URL}/student/${id}/schoolclasses`)
             .then((res: AxiosResponse<SchoolClass[]>) => setSchoolClasses(res.data))
             .catch(err => console.log(err));
     }
     const toSchoolClassDetails = (id: number) => history.push(`/schoolclasses/${id}`);
 
     const deleteTeacher = (): void => {
-        axios.delete(`${BASE_URL}/teacher/${id}`)
-            .then((res: AxiosResponse<Person>) => history.push(`/teachers`))
+        axios.delete(`${BASE_URL}/student/${id}`)
+            .then((res: AxiosResponse<Person>) => history.push(`/students`))
             .catch(err => console.log(err));
     }
     const toggleEditMode = (): void => setEditMode(!editMode);
@@ -48,9 +48,9 @@ const TeacherDetails: React.FC = () => {
     const onEditTeacherFormSubmit = (data: Person) => {
 
         // put request
-        axios.put(`${BASE_URL}/teacher/${id}`, data)
+        axios.put(`${BASE_URL}/student/${id}`, data)
             .then((res: AxiosResponse<Person>) => {
-                setTeacher(res.data);
+                setStudent(res.data);
                 setEditMode(false);
             }).catch(err => console.log(err));
     }
@@ -67,31 +67,32 @@ const TeacherDetails: React.FC = () => {
                     <div className={"row justify-content-center text-center pt-4 pb-4 "}>
                         {!editMode ?
                             <div>
-                                <h2>{teacher?.name} {teacher?.surname}</h2>
+                                <h2>{student?.name} {student?.surname}</h2>
                                 <hr />
-                                <h4>{teacher?.email}</h4>
-                                <h6>Date of birth: {teacher?.dob}, Age: {teacher?.age}</h6>
+                                <h4>{student?.email}</h4>
+                                <h6>Date of birth: {student?.dob}, Age: {student?.age}</h6>
                             </div>
                             :
-                            <EditPersonForm person={teacher!} onSubmit={onEditTeacherFormSubmit} />
+                            <EditPersonForm person={student!} onSubmit={onEditTeacherFormSubmit} />
                         }
                     </div>
                 </div>
 
                 <div className={"row mt-5 flex-column"}>
-                    <h4>{teacher?.name} {teacher?.surname}'s classes</h4>
+                    <h4>{student?.name} {student?.surname}'s classes</h4>
                     {
                         schoolClasses.length > 0 ? <>
                             {
-                                schoolClasses?.map(schoolClass => (
-                                    <div key={schoolClass.id}>
-                                        <Card id={schoolClass.id} title={schoolClass.name}
-                                            goToDetailsHandler={toSchoolClassDetails} /></div>
-
+                                schoolClasses?.map(schoolClasses => (
+                                    <div key={schoolClasses.id}>
+                                        <Card id={schoolClasses.id} title={schoolClasses.name}
+                                            goToDetailsHandler={toSchoolClassDetails} />
+                                    </div>
                                 ))
+
                             }
                         </> :
-                            <Alert message="this teacher takes no classes" />
+                            <Alert message="this student has no classes" />
                     }
 
                 </div>

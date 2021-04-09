@@ -29,6 +29,7 @@ export default function SchoolClassDetails(props) {
         axios.get(`${BASE_URL}/student`)
             .then(res => {
                 setStudentList(res.data);
+                filterStudents();
             })
             .catch(err => console.log(err));
     }, []);
@@ -52,12 +53,25 @@ export default function SchoolClassDetails(props) {
             .catch(err => console.log(err));
     }
 
+    const filterStudents = (): void => {
+        // filter students to avoid in dropdown students that are already in this class
+        console.log(studentList);
+        const filteredStudentList = studentList.filter(val => {
+            if (schoolClass?.students.indexOf(val) === -1) {
+                return val;
+            }
+        });
+        console.log(filteredStudentList);
+        setStudentList(filteredStudentList);
+    }
     return (
         <BoxedPage>
-            <div>
-                {!loading && <div>
-                    <h1>{schoolClass?.name}</h1>
-                    <div className="container row justify-content-between">
+            {!loading && <div>
+                <div className="container " >
+                    <div className="row shadow rounded bg-white mb-4 justify-content-center pt-4 pb-4">
+                        <h1>{schoolClass?.name}</h1>
+                    </div>
+                    <div className="row justify-content-between">
                         <div className="col-md-3">
 
                             <h3 className="mt-3 mb-4">Teacher</h3>
@@ -88,18 +102,18 @@ export default function SchoolClassDetails(props) {
                                                 style: { backgroundColor: 'tomato' }
                                             }} person={student} />
                                         })
-                                    }</div> :
+                                        }</div> :
                                     <div className="alert alert-primary" role="alert">
                                         No students for this school class
-                                    </div>
+                                        </div>
                                 }
 
                             </div>
                         </div>
                     </div>
-                </div>}
+                </div>
 
-            </div>
+            </div>}
         </BoxedPage>
     )
 }
