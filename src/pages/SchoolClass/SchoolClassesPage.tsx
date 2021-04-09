@@ -1,13 +1,14 @@
-import BoxedPage from "../components/BoxedPage";
-import {Spinner, Alert} from "reactstrap";
-import React, {useEffect, useState} from "react";
-import SchoolClassResponse from "../models/responseTypes/SchoolClass";
-import axios, {AxiosResponse} from "axios";
-import BASE_URL from "../config/ApiConfig";
-import Card from "../components/Card";
-import CreateSchoolClassModal from "../components/CreateSchoolClassModal";
-import {useHistory} from "react-router-dom";
-import {Button} from 'primereact/button'
+import BoxedPage from "../../components/common/BoxedPage";
+import React, { useEffect, useState } from "react";
+import SchoolClassResponse from "../../models/SchoolClass";
+import axios, { AxiosResponse } from "axios";
+import BASE_URL from "../../config/ApiConfig";
+import Card from "../../components/UICards/SchoolClassCard";
+import CreateSchoolClassModal from "../../components/modal/CreateSchoolClassModal";
+import { useHistory } from "react-router-dom";
+import { Button } from 'primereact/button'
+import Alert from '../../components/common/Alert';
+import Spinner from '../../components/common/Spinner';
 
 const SchoolClassesPage = (props: any) => {
     const [schoolClasses, setSchoolClasses] = useState<SchoolClassResponse[]>([]);
@@ -33,16 +34,11 @@ const SchoolClassesPage = (props: any) => {
                 <div className={"row mt-2  justify-content-between"}>
                     <h3>School classes</h3>
                     <Button onClick={() => setIsModalOpen(true)} label="Create" icon="pi pi-plus-circle"
-                            className="p-button-primary" iconPos="right"/>
+                        className="p-button-primary" iconPos="right" />
                 </div>
                 <div className={"row justify-content-center"}>
-                    {loading ? (
-                        <Spinner
-                            className={""}
-                            style={{width: "3rem", height: "3rem"}}
-                            color="default"
-                        />
-                    ) : (
+                    {loading ? <Spinner />
+                        :
                         <div className={"col-12 p-0"}>
                             {schoolClasses.length > 0 && (
                                 <div>
@@ -52,7 +48,7 @@ const SchoolClassesPage = (props: any) => {
                                                 id={schoolClass.id}
                                                 title={schoolClass.name}
                                                 secondaryText={`Teacher: ${schoolClass.teacher?.name} ${schoolClass.teacher?.surname}`}
-                                                goToDetailsHandler={(key) => {
+                                                goToDetailsHandler={key => {
                                                     history.push(`schoolclasses/${key}`);
                                                 }}
                                             />
@@ -60,15 +56,11 @@ const SchoolClassesPage = (props: any) => {
                                     ))}
                                 </div>
                             )}
-                            {schoolClasses.length === 0 && (
-                                <Alert color="primary" className="alert-primary mt-3">
-                                    No SchoolClasses
-                                </Alert>
-                            )}
+                            {schoolClasses.length === 0 && <Alert message="no school classes" />}
                         </div>
-                    )}
+                    }
                 </div>
-                {isModalOpen && (
+                {isModalOpen &&
                     <CreateSchoolClassModal
                         onClose={() => setIsModalOpen(false)}
                         isOpen={isModalOpen}
@@ -77,7 +69,7 @@ const SchoolClassesPage = (props: any) => {
                             setSchoolClasses([...schoolClasses, newSchoolClass]); // spread the past and add the new item
                         }}
                     />
-                )}
+                }
             </div>
 
         </BoxedPage>

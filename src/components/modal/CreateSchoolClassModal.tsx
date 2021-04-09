@@ -2,11 +2,11 @@ import React, {useEffect, useState} from "react";
 import {Dialog} from 'primereact/dialog';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
-import Person from "../models/Person";
+import Person from "../../models/Person";
 import axios, {AxiosResponse} from "axios";
-import BASE_URL from "../config/ApiConfig";
-import SchoolClassResponse from "../models/responseTypes/SchoolClass";
-import PersonDropdown from "./PersonDropdown";
+import BASE_URL from "../../config/ApiConfig";
+import SchoolClassResponse from "../../models/SchoolClass";
+import PersonDropdown from "../PersonDropdown";
 
 interface props {
     onSubmit: any;

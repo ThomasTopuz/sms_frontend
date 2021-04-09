@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Person from '../models/Person'
-import {Dropdown} from 'primereact/dropdown';
+import { Dropdown } from 'primereact/dropdown';
 
 interface props {
     items: Person[],
@@ -9,7 +9,7 @@ interface props {
 
 }
 
-const PersonDropdown: React.FC<props> = ({items, onChange, className}) => {
+const PersonDropdown: React.FC<props> = ({ items, onChange, className }) => {
     const [selectedItem, setSelectedItem] = useState<Person>();
 
     const selectedOptionTemplate = (option: Person, props: any) => {
@@ -29,20 +29,20 @@ const PersonDropdown: React.FC<props> = ({items, onChange, className}) => {
 
     const teacherOptionTemplate = (option: Person) => {
         return (
-            <div className="p-1 pl-2 row">
-                <span>{option.name} {option.surname}, {option.email}</span>
+            <div>
+                <span>{option.name} {option.surname}</span>
             </div>
         );
     }
     return (
         <div>
-            <Dropdown className={`w-100 ${className}`} filter showClear filterBy="name" optionLabel="name"
-                      valueTemplate={selectedOptionTemplate}
-                      value={selectedItem} options={items} onChange={(e) => {
-                setSelectedItem(e.value);
-                onChange(e.value);
-            }}
-                      placeholder="Select a teacher" itemTemplate={teacherOptionTemplate}
+            <Dropdown className={`${className}`} filter showClear filterBy="name" optionLabel="name"
+                valueTemplate={selectedOptionTemplate}
+                value={selectedItem} options={items} onChange={(e) => {
+                    setSelectedItem(e.value);
+                    onChange(e.value);
+                }}
+                placeholder="Select an option" itemTemplate={teacherOptionTemplate}
             />
         </div>
     )
