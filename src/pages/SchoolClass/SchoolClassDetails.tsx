@@ -9,6 +9,9 @@ import Person from '../../models/Person';
 import SchoolClassResponse from '../../models/SchoolClass';
 import { Button } from 'primereact/button';
 import PersonDropdown from '../../components/PersonDropdown';
+import DeleteButton from '../../components/common/DeleteButton';
+import EditToggleButton from '../../components/common/EditToggleButton';
+import EditSchoolClassForm from '../../components/EditSchoolClassForm';
 
 export default function SchoolClassDetails(props) {
     const { id } = useParams<any>(); // catch the url paam
@@ -16,6 +19,8 @@ export default function SchoolClassDetails(props) {
     const [schoolClass, setScholClass] = useState<SchoolClassResponse>();
     const [studentList, setStudentList] = useState<Person[]>([]);
     const [studentToAdd, setStudentToAdd] = useState<Person>();
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+
     let history = useHistory();
 
     useEffect(() => {
@@ -27,9 +32,8 @@ export default function SchoolClassDetails(props) {
             })
             .catch(err => history.push("/"));
         axios.get(`${BASE_URL}/student`)
-            .then(res => {
+            .then((res: AxiosResponse<Person[]>) => {
                 setStudentList(res.data);
-                filterStudents();
             })
             .catch(err => console.log(err));
     }, []);
@@ -53,9 +57,17 @@ export default function SchoolClassDetails(props) {
             .catch(err => console.log(err));
     }
 
-    const filterStudents = (): void => {
+    const deleteSchoolClass = (): void => {
+        axios.delete(`${BASE_URL}/schoolclass/${id}`)
+            .then((res: AxiosResponse<SchoolClassResponse>) => history.push("/"))
+            .catch(err => console.log(err));
+    }
+
+    const filterStudents = (studentList: Person[]): void => {
         // filter students to avoid in dropdown students that are already in this class
+
         console.log(studentList);
+        console.log(schoolClass)
         const filteredStudentList = studentList.filter(val => {
             if (schoolClass?.students.indexOf(val) === -1) {
                 return val;
@@ -64,16 +76,34 @@ export default function SchoolClassDetails(props) {
         console.log(filteredStudentList);
         setStudentList(filteredStudentList);
     }
+    const editSchoolClass = (schooClass: any): void => {
+
+        const schoolClassUpdateDTO = {
+            name: schooClass.name,
+            teacherId: schooClass.teacher.id
+        }
+        console.log(schoolClassUpdateDTO);
+        axios.put(`${BASE_URL}/schoolclass/${id}`, schoolClassUpdateDTO)
+            .then((res: AxiosResponse<SchoolClassResponse>) => setScholClass(res.data))
+            .catch(err => console.log(err));
+    }
+
     return (
         <BoxedPage>
             {!loading && <div>
                 <div className="container " >
-                    <div className="row shadow rounded bg-white mb-4 justify-content-center pt-4 pb-4">
-                        <h1>{schoolClass?.name}</h1>
+                    <div className="shadow rounded bg-white mb-4">
+                        <div className="float-right mr-2 mt-2">
+                            <EditToggleButton isEditing={isEditing} toggleMode={() => setIsEditing(!isEditing)} />
+                            <DeleteButton className={" mt-2 mr-2"} deleteHandler={deleteSchoolClass} />
+                        </div>
+                        <div className="row justify-content-center pt-4 pb-4">
+                            {isEditing ? <EditSchoolClassForm schoolClass={schoolClass} onSubmit={editSchoolClass} /> : <h1>{schoolClass?.name}</h1>}
+
+                        </div>
                     </div>
                     <div className="row justify-content-between">
                         <div className="col-md-3">
-
                             <h3 className="mt-3 mb-4">Teacher</h3>
                             <div className={"rounded"}>
                                 {schoolClass?.teacher &&

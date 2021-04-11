@@ -12,7 +12,7 @@ const NavBar: React.FC<any> = () => {
     const [activeItem, setActiveItem] = useState(items[0]);
     const history = useHistory();
     return (
-        <TabMenu className="p-1" model={items} activeItem={activeItem} onTabChange={(e) => {
+        <TabMenu className="bg-white" model={items} activeItem={activeItem} onTabChange={(e) => {
             setActiveItem(e.value);
             history.push(e.value.target);
         }} />

@@ -5,12 +5,13 @@ import { Dropdown } from 'primereact/dropdown';
 interface props {
     items: Person[],
     onChange: any,
-    className?: string
+    className?: string,
+    defualtValue?: Person
 
 }
 
-const PersonDropdown: React.FC<props> = ({ items, onChange, className }) => {
-    const [selectedItem, setSelectedItem] = useState<Person>();
+const PersonDropdown: React.FC<props> = ({ items, onChange, className, defualtValue }) => {
+    const [selectedItem, setSelectedItem] = useState<Person | null>(defualtValue ? defualtValue : null);
 
     const selectedOptionTemplate = (option: Person, props: any) => {
         if (option) {

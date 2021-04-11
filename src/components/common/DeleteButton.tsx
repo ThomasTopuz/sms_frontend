@@ -4,10 +4,11 @@ import { Button } from 'primereact/button';
 
 interface props {
     style?: CSSProperties,
+    className?: string
     deleteHandler: Function
 }
 
-const DeleteButton: React.FC<props> = ({ style, deleteHandler }) => {
+const DeleteButton: React.FC<props> = ({ style, deleteHandler, className }) => {
     const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = useState<boolean>(false);
     const confirm = (event) => {
         confirmPopup({
@@ -23,7 +24,7 @@ const DeleteButton: React.FC<props> = ({ style, deleteHandler }) => {
 
     return (
         <div>
-            <Button style={style} id="deleteActionButton" onClick={confirm} icon="pi pi-trash" className=" p-button-rounded p-button-danger" />
+            <Button style={style} id="deleteActionButton" onClick={confirm} icon="pi pi-trash" className={`${className} p-button-rounded p-button-danger`} />
             <ConfirmPopup target={document.getElementById('deleteActionButton')} visible={isConfirmationPopupOpen} onHide={reject} message="Are you sure you want to proceed?"
                 icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
         </div>
