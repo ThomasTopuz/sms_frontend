@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
-import {Dialog} from 'primereact/dialog';
-import {InputText} from 'primereact/inputtext';
-import {Button} from 'primereact/button';
+import React, { useEffect, useState } from "react";
+import { Dialog } from 'primereact/dialog';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 import Person from "../../models/Person";
-import axios, {AxiosResponse} from "axios";
+import axios, { AxiosResponse } from "axios";
 import BASE_URL from "../../config/ApiConfig";
 import SchoolClassResponse from "../../models/SchoolClass";
 import PersonDropdown from "../PersonDropdown";
@@ -15,10 +15,10 @@ interface props {
 }
 
 const CreateSchoolClassModal: React.FC<props> = ({
-                                                     isOpen,
-                                                     onSubmit,
-                                                     onClose,
-                                                 }) => {
+    isOpen,
+    onSubmit,
+    onClose,
+}) => {
     const [teacher, setTeacher] = useState<Person | null>(null);
     const [className, setClassName] = useState<string>("");
     const [teachersList, setTeachersList] = useState<Person[]>([]);
@@ -33,15 +33,15 @@ const CreateSchoolClassModal: React.FC<props> = ({
     }, []);
 
     function createSchoolClass() {
-        axios.post(`${BASE_URL}/schoolclass`, {name: className, teacherId: teacher?.id})
+        axios.post(`${BASE_URL}/schoolclass`, { name: className, teacherId: teacher?.id })
             .then((res: AxiosResponse<SchoolClassResponse[]>) => {
                 onSubmit(res.data);
             })
             .catch(err => console.log(err));
     }
     return (
-        <Dialog className="w-50" header="Create new school class" visible={isOpen} style={{width: '35vw'}}
-                onHide={() => onClose()}>
+        <Dialog className="w-50" header="Create new school class" visible={isOpen} style={{ width: '35vw' }}
+            onHide={() => onClose()}>
             <div className="">
                 <h5>
                     Fill the form
@@ -49,10 +49,10 @@ const CreateSchoolClassModal: React.FC<props> = ({
             </div>
             <div className="mr-2">
                 <InputText className={"mb-2 w-100"} placeholder={"School Class name"} value={className}
-                           onChange={(e: any) => setClassName(e.target.value)}/>
-                <br/>
+                    onChange={(e: any) => setClassName(e.target.value)} />
+                <br />
                 <PersonDropdown className={"mb-2"} items={teachersList}
-                                onChange={(teacher: Person) => setTeacher(teacher)}/>
+                    onChange={(teacher: Person) => setTeacher(teacher)} />
             </div>
             <div className={"row mr-2 ml-2 justify-content-end"}>
                 <Button className="p-button-primary" type="button" onClick={createSchoolClass}>

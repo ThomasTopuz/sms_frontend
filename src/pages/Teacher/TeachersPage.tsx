@@ -38,8 +38,8 @@ const TeachersPage = () => {
 
     return (
         <BoxedPage>
-            <div className={"mb-2 container"}>
-                <div className={" row justify-content-between"}>
+            <div className={"mb-2"}>
+                <div className={"row justify-content-between"}>
                     <h2 className={""}>Teachers</h2>
                     <Button onClick={() => setIsModalOpen(true)} label="Create" icon="pi pi-plus-circle"
                         className="p-button-primary p-button" iconPos="right" />
@@ -48,17 +48,19 @@ const TeachersPage = () => {
                 <CreatePersonModal onClose={() => setIsModalOpen(false)} isOpen={isModalOpen}
                     onModalSubmit={(data: PersonCreate) => createTeacher(data)} />
             </div>
-            {teachers.length > 0 ? <>{teachers.map((teacher: Person) => {
-                return <div key={teacher.id}>
-                    <PersonCard person={teacher} actionButton={{
-                        click: toDetails,
-                        label: 'Details',
-                        icon: 'pi pi-arrow-circle-right',
-                        className: 'p-button-info'
-                    }} /></div>
-            })}</> :
-                <Alert message="no teachers" />
-            }
+            <div className="row flex-column">
+                {teachers.length > 0 ? <>{teachers.map((teacher: Person) => {
+                    return <div key={teacher.id}>
+                        <PersonCard person={teacher} actionButton={{
+                            click: toDetails,
+                            label: 'Details',
+                            icon: 'pi pi-arrow-circle-right',
+                            className: 'p-button-info'
+                        }} /></div>
+                })}</> :
+                    <Alert message="no teachers" />
+                }
+            </div>
 
 
         </BoxedPage>

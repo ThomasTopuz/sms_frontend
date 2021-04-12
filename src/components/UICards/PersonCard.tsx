@@ -15,8 +15,8 @@ interface props {
 
 const PersonCard: React.FC<props> = ({ person, actionButton }) => {
     return (
-        <div className="bg-white container shadow rounded mb-4">
-            <div className=" row justify-content-between align-items-center p-4">
+        <div className="bg-white col-sm-12 shadow rounded mb-2">
+            <div className=" row justify-content-between align-items-center p-3">
                 <div className="col-5">
                     <p><strong>{person.name} {person.surname}</strong>, {person.age}</p>
                     <p>{person.email}</p>

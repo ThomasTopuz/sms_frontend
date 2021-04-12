@@ -1,5 +1,5 @@
 import React from 'react';
-import Person from '../models/Person';
+import Person from '../../models/Person';
 import { InputText } from "primereact/inputtext";
 import { useForm, Controller } from 'react-hook-form';
 import { Button } from "primereact/button";

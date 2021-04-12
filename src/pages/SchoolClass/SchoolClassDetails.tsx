@@ -11,7 +11,7 @@ import { Button } from 'primereact/button';
 import PersonDropdown from '../../components/PersonDropdown';
 import DeleteButton from '../../components/common/DeleteButton';
 import EditToggleButton from '../../components/common/EditToggleButton';
-import EditSchoolClassForm from '../../components/EditSchoolClassForm';
+import EditSchoolClassForm from '../../components/EditForms/EditSchoolClassForm';
 
 export default function SchoolClassDetails(props) {
     const { id } = useParams<any>(); // catch the url paam
@@ -65,9 +65,6 @@ export default function SchoolClassDetails(props) {
 
     const filterStudents = (studentList: Person[]): void => {
         // filter students to avoid in dropdown students that are already in this class
-
-        console.log(studentList);
-        console.log(schoolClass)
         const filteredStudentList = studentList.filter(val => {
             if (schoolClass?.students.indexOf(val) === -1) {
                 return val;
@@ -82,7 +79,8 @@ export default function SchoolClassDetails(props) {
             name: schooClass.name,
             teacherId: schooClass.teacher.id
         }
-        console.log(schoolClassUpdateDTO);
+
+        setIsEditing(false);
         axios.put(`${BASE_URL}/schoolclass/${id}`, schoolClassUpdateDTO)
             .then((res: AxiosResponse<SchoolClassResponse>) => setScholClass(res.data))
             .catch(err => console.log(err));
@@ -91,7 +89,7 @@ export default function SchoolClassDetails(props) {
     return (
         <BoxedPage>
             {!loading && <div>
-                <div className="container " >
+                <div className="" >
                     <div className="shadow rounded bg-white mb-4">
                         <div className="float-right mr-2 mt-2">
                             <EditToggleButton isEditing={isEditing} toggleMode={() => setIsEditing(!isEditing)} />
@@ -103,16 +101,14 @@ export default function SchoolClassDetails(props) {
                         </div>
                     </div>
                     <div className="row justify-content-between">
-                        <div className="col-md-3">
-                            <h3 className="mt-3 mb-4">Teacher</h3>
+                        <div className="col-md-4 col-sm-12">
+                            <h3 className="mb-3">Teacher</h3>
                             <div className={"rounded"}>
-                                {schoolClass?.teacher &&
-                                    <TeacherFacet teacher={schoolClass.teacher} />
-                                }
+                                <TeacherFacet teacher={schoolClass?.teacher!} />
                             </div>
                         </div>
-                        <div className=" col-md-8">
-                            <div className="container row align-items-center mb-3 justify-content-between">
+                        <div className=" col-md-8 col-sm-12">
+                            <div className="container row align-items-center mb-3 mt-3 mt-md-0 justify-content-between">
                                 <h3>Students</h3>
                                 <div className=" row align-items-center">
                                     <PersonDropdown items={studentList} onChange={(student) => setStudentToAdd(student)} />
@@ -122,7 +118,7 @@ export default function SchoolClassDetails(props) {
                             </div>
                             <div>
                                 {schoolClass!.students.length > 0 ?
-                                    <div>
+                                    <>
                                         {schoolClass?.students.map((student: Person) => {
                                             return <PersonCard key={student.id} actionButton={{
                                                 click: removeStudent,
@@ -132,7 +128,8 @@ export default function SchoolClassDetails(props) {
                                                 style: { backgroundColor: 'tomato' }
                                             }} person={student} />
                                         })
-                                        }</div> :
+                                        }
+                                    </> :
                                     <div className="alert alert-primary" role="alert">
                                         No students for this school class
                                         </div>

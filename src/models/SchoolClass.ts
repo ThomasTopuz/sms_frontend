@@ -1,6 +1,6 @@
 import Person from './Person';
 
-export default interface SchoolClassResponse {
+export default interface SchoolClass {
     id:number,
     name:string,
     students: Person[],

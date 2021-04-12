@@ -6,10 +6,9 @@ import BASE_URL from "../../config/ApiConfig";
 import Person from "../../models/Person";
 import SchoolClass from "../../models/SchoolClass";
 import Card from "../../components/UICards/SchoolClassCard";
-import { Button } from 'primereact/button';
 import DeleteButton from '../../components/common/DeleteButton';
 import Alert from '../../components/common/Alert';
-import EditPersonForm from '../../components/EditPersonForm';
+import EditPersonForm from '../../components/EditForms/EditPersonForm';
 import EditToggleButton from '../../components/common/EditToggleButton';
 
 const TeacherDetails: React.FC = () => {
@@ -46,7 +45,7 @@ const TeacherDetails: React.FC = () => {
     const toggleEditMode = (): void => setEditMode(!editMode);
 
     const onEditTeacherFormSubmit = (data: Person) => {
-
+        setEditMode(false);
         // put request
         axios.put(`${BASE_URL}/student/${id}`, data)
             .then((res: AxiosResponse<Person>) => {
@@ -56,7 +55,7 @@ const TeacherDetails: React.FC = () => {
     }
     return (
         <BoxedPage>
-            <div className={"container"}>
+            <div className={""}>
 
                 <div className="bg-white shadow rounded">
                     <div className="float-right flex-row m-2">

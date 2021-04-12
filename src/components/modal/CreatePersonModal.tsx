@@ -4,6 +4,7 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from 'primereact/calendar';
 import { Button } from "primereact/button";
+import { isMobile } from 'react-device-detect';
 
 interface props {
     onClose: Function,
@@ -19,16 +20,18 @@ interface formInput {
 }
 
 const CreatePersonModal: React.FC<props> = ({ onClose, isOpen, onModalSubmit }) => {
-    const methods = useForm<formInput>();
-    const { handleSubmit, register, control, formState: { errors } } = methods;
+    const widthClass: string = isMobile ? 'w-100' : 'w-50';
+    let methods = useForm<formInput>();
+    const { handleSubmit, register, control } = methods;
     const onSubmit = (data: formInput) => {
         data.dob = getFormattedDate(data.dob);
         onModalSubmit(data);
+        methods.reset();
     };
 
 
     return (
-        <Dialog className="w-50" header="Create new teacher" visible={isOpen} style={{ width: '35vw' }}
+        <Dialog className={widthClass} header="Create new teacher" visible={isOpen}
             onHide={() => onClose()}>
             <div className="">
                 <h5>
@@ -80,7 +83,7 @@ const CreatePersonModal: React.FC<props> = ({ onClose, isOpen, onModalSubmit }) 
                             name="dob"
                             control={control}
                             defaultValue=""
-                            rules={{ required: true, valueAsDate: true }}
+                            rules={{ required: true }}
                             render={({ field }) => <Calendar {...field} name={"dob"} placeholder={"Date of birth"}
                                 id="navigators" monthNavigator
                                 yearNavigator yearRange="1900:2021" />} />

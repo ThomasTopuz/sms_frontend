@@ -8,11 +8,9 @@ import CreateSchoolClassModal from "../../components/modal/CreateSchoolClassModa
 import { useHistory } from "react-router-dom";
 import { Button } from 'primereact/button'
 import Alert from '../../components/common/Alert';
-import Spinner from '../../components/common/Spinner';
 
 const SchoolClassesPage = (props: any) => {
     const [schoolClasses, setSchoolClasses] = useState<SchoolClassResponse[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     let history = useHistory();
     // api call
@@ -20,9 +18,6 @@ const SchoolClassesPage = (props: any) => {
         axios
             .get(`${BASE_URL}/schoolclass`)
             .then((res: AxiosResponse<SchoolClassResponse[]>) => {
-                setTimeout(() => {
-                    setLoading(false);
-                }, 200);
                 setSchoolClasses(res.data);
             })
             .catch((err) => console.log(err));
@@ -30,35 +25,33 @@ const SchoolClassesPage = (props: any) => {
 
     return (
         <BoxedPage>
-            <div className={"container"}>
+            <div className={""}>
                 <div className={"row mt-2  justify-content-between"}>
                     <h3>School classes</h3>
                     <Button onClick={() => setIsModalOpen(true)} label="Create" icon="pi pi-plus-circle"
                         className="p-button-primary" iconPos="right" />
                 </div>
                 <div className={"row justify-content-center"}>
-                    {loading ? <Spinner />
-                        :
-                        <div className={"col-12 p-0"}>
-                            {schoolClasses.length > 0 && (
-                                <div>
-                                    {schoolClasses.map((schoolClass: SchoolClassResponse) => (
-                                        <div className={"mt-2"} key={schoolClass.id}>
-                                            <Card
-                                                id={schoolClass.id}
-                                                title={schoolClass.name}
-                                                secondaryText={`Teacher: ${schoolClass.teacher?.name} ${schoolClass.teacher?.surname}`}
-                                                goToDetailsHandler={key => {
-                                                    history.push(`schoolclasses/${key}`);
-                                                }}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                            {schoolClasses.length === 0 && <Alert message="no school classes" />}
-                        </div>
-                    }
+                    <div className={"col-12 p-0"}>
+                        {schoolClasses.length > 0 && (
+                            <div>
+                                {schoolClasses.map((schoolClass: SchoolClassResponse) => (
+                                    <div className={"mt-2"} key={schoolClass.id}>
+                                        <Card
+                                            id={schoolClass.id}
+                                            title={schoolClass.name}
+                                            secondaryText={`Teacher: ${schoolClass.teacher?.name} ${schoolClass.teacher?.surname}`}
+                                            goToDetailsHandler={key => {
+                                                history.push(`schoolclasses/${key}`);
+                                            }}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        {schoolClasses.length === 0 && <Alert message="no school classes" />}
+                    </div>
+
                 </div>
                 {isModalOpen &&
                     <CreateSchoolClassModal
