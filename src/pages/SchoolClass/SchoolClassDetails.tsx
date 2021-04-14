@@ -59,7 +59,9 @@ export default function SchoolClassDetails(props) {
 
     const deleteSchoolClass = (): void => {
         axios.delete(`${BASE_URL}/schoolclass/${id}`)
-            .then((res: AxiosResponse<SchoolClassResponse>) => history.push("/"))
+            .then((res: AxiosResponse<SchoolClassResponse>) => {
+                setTimeout(() => history.push(`/`), 1500); // timimg
+            })
             .catch(err => console.log(err));
     }
 

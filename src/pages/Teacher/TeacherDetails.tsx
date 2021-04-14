@@ -22,6 +22,7 @@ const TeacherDetails: React.FC = () => {
     useEffect(() => {
         fetchTeacherById();
         fetchTeacherSchoolClasses();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchTeacherById = (): void => {
@@ -39,7 +40,7 @@ const TeacherDetails: React.FC = () => {
 
     const deleteTeacher = (): void => {
         axios.delete(`${BASE_URL}/teacher/${id}`)
-            .then((res: AxiosResponse<Person>) => history.push(`/teachers`))
+            .then((res: AxiosResponse<Person>) => setTimeout(() => history.push(`/teachers`), 1500))
             .catch(err => console.log(err));
     }
     const toggleEditMode = (): void => setEditMode(!editMode);
@@ -54,7 +55,7 @@ const TeacherDetails: React.FC = () => {
     }
     return (
         <BoxedPage>
-            <div className={""}>
+            <div>
 
                 <div className="bg-white shadow rounded">
                     <div className="float-right flex-row m-2">

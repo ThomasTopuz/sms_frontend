@@ -22,6 +22,7 @@ const TeacherDetails: React.FC = () => {
     useEffect(() => {
         fetchTeacherById();
         fetchTeacherSchoolClasses();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchTeacherById = (): void => {
@@ -37,11 +38,14 @@ const TeacherDetails: React.FC = () => {
     }
     const toSchoolClassDetails = (id: number) => history.push(`/schoolclasses/${id}`);
 
-    const deleteTeacher = (): void => {
+    const deleteTeacher = async () => {
         axios.delete(`${BASE_URL}/student/${id}`)
-            .then((res: AxiosResponse<Person>) => history.push(`/students`))
+            .then((res: AxiosResponse<Person>) => {
+                setTimeout(() => history.push("/students"), 1500);
+            })
             .catch(err => console.log(err));
     }
+
     const toggleEditMode = (): void => setEditMode(!editMode);
 
     const onEditTeacherFormSubmit = (data: Person) => {

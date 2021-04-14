@@ -25,7 +25,7 @@ const StudentsPage = () => {
     }, []);
 
     function toDetails(id: number) {
-        history.push(`students/${id}`);
+        history.push(`student/${id}`);
     }
 
     function createTeacher(data: PersonCreate) {

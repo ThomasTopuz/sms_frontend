@@ -36,13 +36,13 @@ const SchoolClassesPage = (props: any) => {
                         {schoolClasses.length > 0 && (
                             <div>
                                 {schoolClasses.map((schoolClass: SchoolClassResponse) => (
-                                    <div className={"mt-2"} key={schoolClass.id}>
+                                    <div key={schoolClass.id}>
                                         <Card
                                             id={schoolClass.id}
                                             title={schoolClass.name}
                                             secondaryText={`Teacher: ${schoolClass.teacher?.name} ${schoolClass.teacher?.surname}`}
                                             goToDetailsHandler={key => {
-                                                history.push(`schoolclasses/${key}`);
+                                                history.push(`schoolclass/${key}`);
                                             }}
                                         />
                                     </div>

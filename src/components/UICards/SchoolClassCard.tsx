@@ -12,7 +12,7 @@ const Card: React.FC<props> = ({ id, title, secondaryText, goToDetailsHandler })
     return (
         <div className="
          shadow bg-white
-         rounded mb-3 mt-2">
+         rounded mb-2 mt-3">
             <div className={"container"}>
                 <div className={"row justify-content-between align-items-center p-4"}>
                     <div >

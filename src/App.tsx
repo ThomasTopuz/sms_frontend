@@ -14,24 +14,24 @@ function App() {
         <BrowserRouter>
             <Navbar />
             <Switch>
-                <Route exact path="/schoolclasses/:id">
+                <Route exact path="/schoolclass/:id">
                     <SchoolClassDetails />
                 </Route>
-                <Route exact path="/teachers/:id">
+                <Route exact path="/teacher/:id">
                     <TeacherDetails />
                 </Route>
 
-                <Route exact path="/students/:id">
+                <Route exact path="/student/:id">
                     <StudentDetails />
-                </Route>
-                <Route exact path="/">
-                    <SchoolClassesPage />
                 </Route>
                 <Route exact path="/students">
                     <StudentsPage />
                 </Route>
                 <Route exact path="/teachers">
                     <TeachersPage />
+                </Route>
+                <Route exact path="/">
+                    <SchoolClassesPage />
                 </Route>
             </Switch>
         </BrowserRouter>

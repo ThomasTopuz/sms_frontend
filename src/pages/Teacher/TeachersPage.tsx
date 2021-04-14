@@ -22,10 +22,10 @@ const TeachersPage = () => {
                 setTeachers(res.data);
             })
             .catch(err => console.log(err));
-    },[]);
+    }, []);
 
     function toDetails(id: number) {
-        history.push(`teachers/${id}`);
+        history.push(`teacher/${id}`);
     }
 
     function createTeacher(data: PersonCreate) {
@@ -49,15 +49,16 @@ const TeachersPage = () => {
                     onModalSubmit={(data: PersonCreate) => createTeacher(data)} />
             </div>
             <div className="row flex-column">
-                {teachers.length > 0 ? <>{teachers.map((teacher: Person) => {
-                    return <div key={teacher.id}>
-                        <PersonCard person={teacher} actionButton={{
-                            click: toDetails,
-                            label: 'Details',
-                            icon: 'pi pi-arrow-circle-right',
-                            className: 'p-button-info'
-                        }} /></div>
-                })}</> :
+                {teachers.length > 0 ?
+                    <div>{teachers.map((teacher: Person) => {
+                        return <div key={teacher.id}>
+                            <PersonCard person={teacher} actionButton={{
+                                click: toDetails,
+                                label: 'Details',
+                                icon: 'pi pi-arrow-circle-right',
+                                className: 'p-button-info'
+                            }} /></div>
+                    })}</div> :
                     <Alert message="no teachers" />
                 }
             </div>
