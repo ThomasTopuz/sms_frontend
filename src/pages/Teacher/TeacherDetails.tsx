@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from "react-router-dom";
 import BoxedPage from "../../components/common/BoxedPage";
 import axios, { AxiosResponse } from "axios";
@@ -10,13 +10,14 @@ import DeleteButton from '../../components/common/DeleteButton';
 import Alert from '../../components/common/Alert';
 import EditPersonForm from '../../components/EditForms/EditPersonForm';
 import EditToggleButton from '../../components/common/EditToggleButton';
+import { Toast } from 'primereact/toast';
 
 const TeacherDetails: React.FC = () => {
     const { id } = useParams<any>();
     const [teacher, setTeacher] = useState<Person>();
     const [schoolClasses, setSchoolClasses] = useState<SchoolClass[]>([]);
     const [editMode, setEditMode] = useState<boolean>(false);
-
+    const cantDeleteToast = useRef(null);
     let history = useHistory();
 
     useEffect(() => {
@@ -41,7 +42,12 @@ const TeacherDetails: React.FC = () => {
     const deleteTeacher = (): void => {
         axios.delete(`${BASE_URL}/teacher/${id}`)
             .then((res: AxiosResponse<Person>) => setTimeout(() => history.push(`/teachers`), 1500))
-            .catch(err => console.log(err));
+            .catch(err => {
+                cantDeleteToast.current.show({
+                    severity: 'error', summary: 'Cannot delete', detail: 'This teacher is taking classes', life: 3000
+                })
+                console.log("error dependency")
+            });
     }
     const toggleEditMode = (): void => setEditMode(!editMode);
 
@@ -51,10 +57,12 @@ const TeacherDetails: React.FC = () => {
         axios.put(`${BASE_URL}/teacher/${id}`, data)
             .then((res: AxiosResponse<Person>) => {
                 setTeacher(res.data);
-            }).catch(err => console.log(err));
+            }).catch(err => console.log(err))
     }
+
     return (
         <BoxedPage>
+            <Toast ref={cantDeleteToast} position="bottom-right" />
             <div>
 
                 <div className="bg-white shadow rounded">

@@ -18,7 +18,6 @@ const TeacherDetails: React.FC = () => {
     const [editMode, setEditMode] = useState<boolean>(false);
 
     let history = useHistory();
-
     useEffect(() => {
         fetchTeacherById();
         fetchTeacherSchoolClasses();
@@ -59,8 +58,8 @@ const TeacherDetails: React.FC = () => {
     }
     return (
         <BoxedPage>
-            <div className={""}>
 
+            <div className={""}>
                 <div className="bg-white shadow rounded">
                     <div className="float-right flex-row m-2">
                         <EditToggleButton isEditing={editMode} toggleMode={toggleEditMode} />
