@@ -11,7 +11,7 @@ interface props {
 const TeacherFacet: React.FC<props> = ({ teacher }) => {
     let history = useHistory();
     function toDetails() {
-        history.push(`/teachers/${teacher.id}`);
+        history.push(`/teacher/${teacher.id}`);
     }
     return (
         <div className="rounded bg-white shadow-lg">

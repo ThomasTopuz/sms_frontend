@@ -37,7 +37,7 @@ const TeacherDetails: React.FC = () => {
             .then((res: AxiosResponse<SchoolClass[]>) => setSchoolClasses(res.data))
             .catch(err => console.log(err));
     }
-    const toSchoolClassDetails = (id: number) => history.push(`/schoolclasses/${id}`);
+    const toSchoolClassDetails = (id: number) => history.push(`/schoolclass/${id}`);
 
     const deleteTeacher = (): void => {
         axios.delete(`${BASE_URL}/teacher/${id}`)
