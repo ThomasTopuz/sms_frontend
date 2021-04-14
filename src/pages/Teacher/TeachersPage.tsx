@@ -22,7 +22,7 @@ const TeachersPage = () => {
                 setTeachers(res.data);
             })
             .catch(err => console.log(err));
-    });
+    },[]);
 
     function toDetails(id: number) {
         history.push(`teachers/${id}`);

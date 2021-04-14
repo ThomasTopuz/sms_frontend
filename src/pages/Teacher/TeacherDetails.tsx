@@ -45,12 +45,11 @@ const TeacherDetails: React.FC = () => {
     const toggleEditMode = (): void => setEditMode(!editMode);
 
     const onEditTeacherFormSubmit = (data: Person) => {
-
+        setEditMode(false);
         // put request
         axios.put(`${BASE_URL}/teacher/${id}`, data)
             .then((res: AxiosResponse<Person>) => {
                 setTeacher(res.data);
-                setEditMode(false);
             }).catch(err => console.log(err));
     }
     return (

@@ -22,7 +22,7 @@ const StudentsPage = () => {
                 setStudents(res.data);
             })
             .catch(err => console.log(err));
-    });
+    }, []);
 
     function toDetails(id: number) {
         history.push(`students/${id}`);
@@ -49,20 +49,21 @@ const StudentsPage = () => {
                     onModalSubmit={(data: PersonCreate) => createTeacher(data)} />
             </div>
             <div className="row flex-column">
-                {students.length > 0 ? <>{students.map((student: Person) => {
-                    return <div key={student.id}>
-                        <PersonCard person={student} actionButton={{
-                            click: toDetails,
-                            label: 'Details',
-                            icon: 'pi pi-arrow-circle-right',
-                            className: 'p-button-info'
-                        }} /></div>
-                })}</> :
-                    <Alert message="no teachers" />
+                {students.length > 0 ?
+                    <div>{students.map((student: Person) => {
+                        return <div key={student.id}>
+                            <PersonCard person={student} actionButton={{
+                                click: toDetails,
+                                label: 'Details',
+                                icon: 'pi pi-arrow-circle-right',
+                                className: 'p-button-info'
+                            }} /></div>
+                    })}
+                    </div>
+                    :
+                    <Alert message="no students" />
                 }
             </div>
-
-
         </BoxedPage>
     );
 }
