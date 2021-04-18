@@ -1,12 +1,12 @@
 import React from 'react'
-import { Spinner as BootstrapSpinner } from "reactstrap";
+import { ProgressSpinner } from 'primereact/progressspinner';
+
 
 const Spinner: React.FC = () => {
     return (
-        <BootstrapSpinner
-            style={{ width: "3rem", height: "3rem" }}
-            color="default"
-        />
+        <div className="row justify-content-center">
+            <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="#EEEEEE" animationDuration=".5s" />
+        </div>
     )
 }
 export default Spinner;

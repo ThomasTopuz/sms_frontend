@@ -1,14 +1,15 @@
 import React from "react";
-import { isMobile } from 'react-device-detect';
+import Spinner from "./Spinner";
 
-const BoxedPage = ({ children }) => {
-    let responsiveClassname = !isMobile ? 'container' : '';
+interface props {
+    children: React.ReactNode,
+    isLoading?: boolean
+}
+const BoxedPage: React.FC<props> = ({ isLoading, children }) => {
     return (
-        <div className={`mt-3 ${responsiveClassname}`}>
+        <div className={`mt-3 container`}>
             <div className={"row justify-content-center"}>
-                <div className={"col-md-12"}>
-                    {children}
-                </div>
+                {isLoading ? <Spinner /> : <div className={"col-md-12"}>{children}</div>}
             </div>
         </div>
     );

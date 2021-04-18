@@ -28,8 +28,8 @@ const EditSchoolClassForm: React.FC<props> = ({ schoolClass, onSubmit }) => {
             .catch(err => console.log(err));
     }, []);
     return (
-        <div>
-            <div className="row mt-1">
+        <div className="container row col-4">
+            <div className="row mt-1 justify-content-between">
                 <Controller
                     name="name"
                     control={control}
@@ -46,13 +46,10 @@ const EditSchoolClassForm: React.FC<props> = ({ schoolClass, onSubmit }) => {
                     render={({ field }) => <PersonDropdown defualtValue={schoolClass.teacher} items={teacherList}
                         onChange={(teacher: Person) => field.onChange(teacher)} className="mt-1" />}
                 />
+                <Button label="Submit" onClick={handleSubmit(onSubmit)} className="p-button-primary mt-1" />
 
             </div>
-            <div className="row justify-content-end mt-1">
-                <Button label="Submit" onClick={handleSubmit(onSubmit)} className="p-button-primary" />
-            </div>
-
-        </div>
+        </div >
     );
 }
 export default EditSchoolClassForm;

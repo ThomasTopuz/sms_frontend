@@ -14,12 +14,14 @@ const StudentsPage = () => {
     const [students, setStudents] = useState<Person[]>([]);
     let history = useHistory();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isLoading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         // fetch all teachers
         axios.get(`${BASE_URL}/student`)
             .then((res: AxiosResponse<Person[]>) => {
                 setStudents(res.data);
+                setLoading(false);
             })
             .catch(err => console.log(err));
     }, []);
@@ -37,7 +39,7 @@ const StudentsPage = () => {
     }
 
     return (
-        <BoxedPage>
+        <BoxedPage isLoading={isLoading}>
             <div className={"mb-2"}>
                 <div className={"row justify-content-between"}>
                     <h2>Students</h2>

@@ -11,33 +11,36 @@ import Alert from '../../components/common/Alert';
 import EditPersonForm from '../../components/EditForms/EditPersonForm';
 import EditToggleButton from '../../components/common/EditToggleButton';
 
-const TeacherDetails: React.FC = () => {
+const StudentDetails: React.FC = () => {
     const { id } = useParams<any>();
     const [student, setStudent] = useState<Person>();
     const [schoolClasses, setSchoolClasses] = useState<SchoolClass[]>([]);
     const [editMode, setEditMode] = useState<boolean>(false);
+    const [isLoading, setLoading] = useState<boolean>(true);
 
     let history = useHistory();
     useEffect(() => {
-        fetchTeacherById();
-        fetchTeacherSchoolClasses();
+        fetchStudentById();
+        fetchStudentSchoolClasses();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const fetchTeacherById = (): void => {
+    const fetchStudentById = (): void => {
         axios.get(`${BASE_URL}/student/${id}`)
             .then((res: AxiosResponse<Person>) => {
                 setStudent(res.data);
+                setLoading(false);
             }).catch(err => console.log(err));
     }
-    const fetchTeacherSchoolClasses = (): void => {
+    const fetchStudentSchoolClasses = (): void => {
         axios.get(`${BASE_URL}/student/${id}/schoolclasses`)
             .then((res: AxiosResponse<SchoolClass[]>) => setSchoolClasses(res.data))
             .catch(err => console.log(err));
     }
     const toSchoolClassDetails = (id: number) => history.push(`/schoolclass/${id}`);
 
-    const deleteTeacher = async () => {
+    const deleteStudent = async () => {
+        setLoading(true);
         axios.delete(`${BASE_URL}/student/${id}`)
             .then((res: AxiosResponse<Person>) => {
                 setTimeout(() => history.push("/students"), 1500);
@@ -47,23 +50,25 @@ const TeacherDetails: React.FC = () => {
 
     const toggleEditMode = (): void => setEditMode(!editMode);
 
-    const onEditTeacherFormSubmit = (data: Person) => {
+    const onEditStudentFormSubmit = (data: Person) => {
         setEditMode(false);
+        setLoading(true);
         // put request
         axios.put(`${BASE_URL}/student/${id}`, data)
             .then((res: AxiosResponse<Person>) => {
                 setStudent(res.data);
                 setEditMode(false);
+                setLoading(false);
             }).catch(err => console.log(err));
     }
     return (
-        <BoxedPage>
+        <BoxedPage isLoading={isLoading}>
 
             <div className={""}>
                 <div className="bg-white shadow rounded">
                     <div className="float-right flex-row m-2">
                         <EditToggleButton isEditing={editMode} toggleMode={toggleEditMode} />
-                        <DeleteButton deleteHandler={deleteTeacher} />
+                        <DeleteButton deleteHandler={deleteStudent} />
                     </div>
 
                     <div className={"row justify-content-center text-center pt-4 pb-4 "}>
@@ -75,7 +80,7 @@ const TeacherDetails: React.FC = () => {
                                 <h6>Date of birth: {student?.dob}, Age: {student?.age}</h6>
                             </div>
                             :
-                            <EditPersonForm person={student!} onSubmit={onEditTeacherFormSubmit} />
+                            <EditPersonForm person={student!} onSubmit={onEditStudentFormSubmit} />
                         }
                     </div>
                 </div>
@@ -105,4 +110,4 @@ const TeacherDetails: React.FC = () => {
         </BoxedPage>
     );
 }
-export default TeacherDetails;
+export default StudentDetails;

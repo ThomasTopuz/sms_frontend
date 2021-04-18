@@ -12,6 +12,8 @@ import Alert from '../../components/common/Alert';
 const SchoolClassesPage = (props: any) => {
     const [schoolClasses, setSchoolClasses] = useState<SchoolClassResponse[]>([]);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isLoading, setLoading] = useState<boolean>(true);
+
     let history = useHistory();
     // api call
     useEffect(() => {
@@ -19,12 +21,13 @@ const SchoolClassesPage = (props: any) => {
             .get(`${BASE_URL}/schoolclass`)
             .then((res: AxiosResponse<SchoolClassResponse[]>) => {
                 setSchoolClasses(res.data);
+                setLoading(false);
             })
             .catch((err) => console.log(err));
     }, []);
 
     return (
-        <BoxedPage>
+        <BoxedPage isLoading={isLoading}>
             <div className={""}>
                 <div className={"row mt-2  justify-content-between"}>
                     <h3>School classes</h3>
@@ -33,7 +36,7 @@ const SchoolClassesPage = (props: any) => {
                 </div>
                 <div className={"row justify-content-center"}>
                     <div className={"col-12 p-0"}>
-                        {schoolClasses.length > 0 && (
+                        {schoolClasses.length > 0 ? (
                             <div>
                                 {schoolClasses.map((schoolClass: SchoolClassResponse) => (
                                     <div key={schoolClass.id}>
@@ -48,23 +51,20 @@ const SchoolClassesPage = (props: any) => {
                                     </div>
                                 ))}
                             </div>
-                        )}
-                        {schoolClasses.length === 0 && <Alert message="no school classes" />}
+                        ) : <Alert message="no school classes" />
+                        }
                     </div>
 
                 </div>
-                {isModalOpen &&
-                    <CreateSchoolClassModal
-                        onClose={() => setIsModalOpen(false)}
-                        isOpen={isModalOpen}
-                        onSubmit={(newSchoolClass: SchoolClassResponse) => {
-                            setIsModalOpen(false);
-                            setSchoolClasses([...schoolClasses, newSchoolClass]); // spread the past and add the new item
-                        }}
-                    />
-                }
+                <CreateSchoolClassModal
+                    onClose={() => setIsModalOpen(false)}
+                    isOpen={isModalOpen}
+                    onSubmit={(newSchoolClass: SchoolClassResponse) => {
+                        setIsModalOpen(false);
+                        setSchoolClasses([...schoolClasses, newSchoolClass]); // spread the past and add the new item
+                    }}
+                />
             </div>
-
         </BoxedPage>
     );
 };

@@ -17,6 +17,8 @@ const TeacherDetails: React.FC = () => {
     const [teacher, setTeacher] = useState<Person>();
     const [schoolClasses, setSchoolClasses] = useState<SchoolClass[]>([]);
     const [editMode, setEditMode] = useState<boolean>(false);
+    const [isLoading, setLoading] = useState<boolean>(true);
+
     const cantDeleteToast = useRef(null);
     let history = useHistory();
 
@@ -30,41 +32,44 @@ const TeacherDetails: React.FC = () => {
         axios.get(`${BASE_URL}/teacher/${id}`)
             .then((res: AxiosResponse<Person>) => {
                 setTeacher(res.data);
+                setLoading(false);
             }).catch(err => console.log(err));
     }
     const fetchTeacherSchoolClasses = (): void => {
         axios.get(`${BASE_URL}/teacher/${id}/schoolclasses`)
-            .then((res: AxiosResponse<SchoolClass[]>) => setSchoolClasses(res.data))
+            .then((res: AxiosResponse<SchoolClass[]>) => { setSchoolClasses(res.data); })
             .catch(err => console.log(err));
     }
     const toSchoolClassDetails = (id: number) => history.push(`/schoolclass/${id}`);
 
     const deleteTeacher = (): void => {
+        setLoading(true);
         axios.delete(`${BASE_URL}/teacher/${id}`)
             .then((res: AxiosResponse<Person>) => setTimeout(() => history.push(`/teachers`), 1500))
             .catch(err => {
                 cantDeleteToast.current.show({
                     severity: 'error', summary: 'Cannot delete', detail: 'This teacher is taking classes', life: 3000
                 })
-                console.log("error dependency")
+                console.log("dependency error");
             });
     }
     const toggleEditMode = (): void => setEditMode(!editMode);
 
     const onEditTeacherFormSubmit = (data: Person) => {
         setEditMode(false);
+        setLoading(true);
         // put request
         axios.put(`${BASE_URL}/teacher/${id}`, data)
             .then((res: AxiosResponse<Person>) => {
                 setTeacher(res.data);
+                setLoading(false);
             }).catch(err => console.log(err))
     }
 
     return (
-        <BoxedPage>
+        <BoxedPage isLoading={isLoading}>
             <Toast ref={cantDeleteToast} position="bottom-right" />
             <div>
-
                 <div className="bg-white shadow rounded">
                     <div className="float-right flex-row m-2">
                         <EditToggleButton isEditing={editMode} toggleMode={toggleEditMode} />

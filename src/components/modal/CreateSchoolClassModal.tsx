@@ -27,7 +27,6 @@ const CreateSchoolClassModal: React.FC<props> = ({
     useEffect(() => {
         axios.get(`${BASE_URL}/teacher`)
             .then((res: AxiosResponse<Person[]>) => {
-                console.log(res.data);
                 setTeachersList(res.data);
             }).catch(err => console.log(err));
     }, []);

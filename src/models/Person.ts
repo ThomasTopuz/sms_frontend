@@ -1,8 +1,5 @@
-export default interface Person {
-    id:number,
-    name:string,
-    surname:string,
-    email:string,
-    dob:string,
+import PersonCreate from "./PersonCreateDTO";
+
+export default interface Person extends PersonCreate{
     age:number
 }
