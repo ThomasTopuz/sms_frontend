@@ -18,6 +18,7 @@ export default function SchoolClassDetails(props) {
     const [loading, setLoading] = useState<boolean>(true);
     const [schoolClass, setScholClass] = useState<SchoolClassResponse>();
     const [studentList, setStudentList] = useState<Person[]>([]);
+    const [filteredStudentList, setFilteredStudentList] = useState<Person[]>([]);
     const [studentToAdd, setStudentToAdd] = useState<Person>();
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -38,6 +39,17 @@ export default function SchoolClassDetails(props) {
             .catch(err => console.log(err));
     }, []);
 
+    useEffect(() => {
+        const filteredStudentListBuffer = studentList.filter(val => {
+            if (schoolClass?.students.find(item => item.id === val.id) === undefined) {
+                return val;
+            }
+        });
+
+        console.log("filtered", filteredStudentListBuffer);
+        setFilteredStudentList(filteredStudentListBuffer);
+    }, [schoolClass])
+
     const removeStudent = (id: number): void => {
         axios.put(`${BASE_URL}/schoolclass/${schoolClass?.id}/removestudent/${id}`)
             .then((res: AxiosResponse<Person>) => {
@@ -49,7 +61,8 @@ export default function SchoolClassDetails(props) {
     }
 
     const addStudent = (): void => {
-        console.log(studentToAdd)
+        console.log("addstudent")
+        setStudentToAdd(null);
         axios.put(`${BASE_URL}/schoolclass/${schoolClass?.id}/addstudent/${studentToAdd?.id}`)
             .then(res => {
                 setScholClass(res.data);
@@ -65,16 +78,7 @@ export default function SchoolClassDetails(props) {
             .catch(err => console.log(err));
     }
 
-    const filterStudents = (studentList: Person[]): void => {
-        // filter students to avoid in dropdown students that are already in this class
-        const filteredStudentList = studentList.filter(val => {
-            if (schoolClass?.students.indexOf(val) === -1) {
-                return val;
-            }
-        });
-        console.log(filteredStudentList);
-        setStudentList(filteredStudentList);
-    }
+
     const editSchoolClass = (schooClass: any): void => {
 
         const schoolClassUpdateDTO = {
@@ -113,7 +117,7 @@ export default function SchoolClassDetails(props) {
                             <div className="container row align-items-center mb-3 mt-3 mt-md-0 justify-content-between">
                                 <h3>Students</h3>
                                 <div className=" row align-items-center">
-                                    <PersonDropdown items={studentList} onChange={(student) => setStudentToAdd(student)} />
+                                    <PersonDropdown items={filteredStudentList} onChange={(student) => setStudentToAdd(student)} />
                                     <Button onClick={addStudent} icon="pi pi-user-plus"
                                         className="ml-2 p-button-raised p-button-primary p-button-rounded" />
                                 </div>

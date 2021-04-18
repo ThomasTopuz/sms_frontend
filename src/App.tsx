@@ -9,33 +9,31 @@ import TeacherDetails from "./pages/Teacher/TeacherDetails";
 import StudentsPage from "./pages/Student/StudentsPage";
 import StudentDetails from "./pages/Student/StudentDetails";
 
-function App() {
-    return (
-        <BrowserRouter>
-            <Navbar />
-            <Switch>
-                <Route exact path="/schoolclass/:id">
-                    <SchoolClassDetails />
-                </Route>
-                <Route exact path="/teacher/:id">
-                    <TeacherDetails />
-                </Route>
+const App: React.FC = () => (
+    <BrowserRouter>
+        <Navbar />
+        <Switch>
+            <Route exact path="/schoolclass/:id">
+                <SchoolClassDetails />
+            </Route>
+            <Route exact path="/teacher/:id">
+                <TeacherDetails />
+            </Route>
 
-                <Route exact path="/student/:id">
-                    <StudentDetails />
-                </Route>
-                <Route exact path="/students">
-                    <StudentsPage />
-                </Route>
-                <Route exact path="/teachers">
-                    <TeachersPage />
-                </Route>
-                <Route exact path="/">
-                    <SchoolClassesPage />
-                </Route>
-            </Switch>
-        </BrowserRouter>
-    );
-}
+            <Route exact path="/student/:id">
+                <StudentDetails />
+            </Route>
+            <Route exact path="/students">
+                <StudentsPage />
+            </Route>
+            <Route exact path="/teachers">
+                <TeachersPage />
+            </Route>
+            <Route exact path="/">
+                <SchoolClassesPage />
+            </Route>
+        </Switch>
+    </BrowserRouter>
+);
 
 export default App;
