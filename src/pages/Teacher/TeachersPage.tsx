@@ -48,7 +48,7 @@ const TeachersPage = () => {
                 </div>
 
                 <CreatePersonModal onClose={() => setIsModalOpen(false)} isOpen={isModalOpen}
-                    onModalSubmit={(data: PersonCreate) => createTeacher(data)} />
+                    onModalSubmit={(data: PersonCreate) => createTeacher(data)} title="Create a new teacher."/>
             </div>
             <div className="row flex-column">
                 {teachers.length > 0 ?

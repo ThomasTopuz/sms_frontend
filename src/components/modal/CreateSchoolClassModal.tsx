@@ -7,6 +7,7 @@ import axios, { AxiosResponse } from "axios";
 import BASE_URL from "../../config/ApiConfig";
 import SchoolClassResponse from "../../models/SchoolClass";
 import PersonDropdown from "../PersonDropdown";
+import { isMobile } from 'react-device-detect';
 
 interface props {
     onSubmit: any;
@@ -38,8 +39,10 @@ const CreateSchoolClassModal: React.FC<props> = ({
             })
             .catch(err => console.log(err));
     }
+
+    const widthClass: string = isMobile ? 'w-100' : 'w-50';
     return (
-        <Dialog className="w-50" header="Create new school class" visible={isOpen} style={{ width: '35vw' }}
+        <Dialog className={widthClass} header="Create new school class" visible={isOpen} style={{ width: '35vw' }}
             onHide={() => onClose()}>
             <div className="">
                 <h5>

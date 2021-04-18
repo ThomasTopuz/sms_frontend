@@ -9,7 +9,8 @@ import { isMobile } from 'react-device-detect';
 interface props {
     onClose: Function,
     isOpen: boolean,
-    onModalSubmit: Function
+    onModalSubmit: Function,
+    title: string
 }
 
 interface formInput {
@@ -19,7 +20,7 @@ interface formInput {
     dob: any
 }
 
-const CreatePersonModal: React.FC<props> = ({ onClose, isOpen, onModalSubmit }) => {
+const CreatePersonModal: React.FC<props> = ({ onClose, isOpen, onModalSubmit, title }) => {
     const widthClass: string = isMobile ? 'w-100' : 'w-50';
     let methods = useForm<formInput>();
     const { handleSubmit, register, control } = methods;
@@ -31,7 +32,7 @@ const CreatePersonModal: React.FC<props> = ({ onClose, isOpen, onModalSubmit }) 
 
 
     return (
-        <Dialog className={widthClass} header="Create new teacher" visible={isOpen}
+        <Dialog className={widthClass} header={title} visible={isOpen}
             onHide={() => onClose()}>
             <div className="">
                 <h5>
