@@ -47,10 +47,13 @@ const TeacherDetails: React.FC = () => {
         axios.delete(`${BASE_URL}/teacher/${id}`)
             .then((res: AxiosResponse<Person>) => setTimeout(() => history.push(`/teachers`), 1500))
             .catch(err => {
+                setLoading(false);
                 cantDeleteToast.current.show({
+
                     severity: 'error', summary: 'Cannot delete', detail: 'This teacher is taking classes', life: 3000
                 })
                 console.log("dependency error");
+
             });
     }
     const toggleEditMode = (): void => setEditMode(!editMode);
@@ -68,49 +71,52 @@ const TeacherDetails: React.FC = () => {
 
     return (
         <BoxedPage isLoading={isLoading}>
-            <Toast ref={cantDeleteToast} position="bottom-right" />
-            <div>
-                <div className="bg-white shadow rounded">
-                    <div className="float-right flex-row m-2">
-                        <EditToggleButton isEditing={editMode} toggleMode={toggleEditMode} />
-                        <DeleteButton deleteHandler={deleteTeacher} />
-                    </div>
-
-                    <div className={"row justify-content-center text-center pt-4 pb-4 "}>
-                        {!editMode ?
-                            <div>
-                                <h2>{teacher?.name} {teacher?.surname}</h2>
-                                <hr />
-                                <h4>{teacher?.email}</h4>
-                                <h6>Date of birth: {teacher?.dob}, Age: {teacher?.age}</h6>
+            {
+                !isLoading &&
+                <>
+                    <Toast ref={cantDeleteToast} position="bottom-right" />
+                    <div>
+                        <div className="bg-white shadow rounded">
+                            <div className="float-right flex-row m-2">
+                                <EditToggleButton isEditing={editMode} toggleMode={toggleEditMode} />
+                                <DeleteButton deleteHandler={deleteTeacher} />
                             </div>
-                            :
-                            <EditPersonForm person={teacher!} onSubmit={onEditTeacherFormSubmit} />
-                        }
-                    </div>
-                </div>
 
-                <div className={"row mt-5 flex-column"}>
-                    <h4>{teacher?.name} {teacher?.surname}'s classes</h4>
-                    {
-                        schoolClasses.length > 0 ? <>
+                            <div className={"row justify-content-center text-center pt-4 pb-4 "}>
+                                {!editMode ?
+                                    <div>
+                                        <h2>{teacher?.name} {teacher?.surname}</h2>
+                                        <hr />
+                                        <h4>{teacher?.email}</h4>
+                                        <h6>Date of birth: {teacher?.dob}, Age: {teacher?.age}</h6>
+                                    </div>
+                                    :
+                                    <EditPersonForm person={teacher!} onSubmit={onEditTeacherFormSubmit} />
+                                }
+                            </div>
+                        </div>
+
+                        <div className={"row mt-5 flex-column"}>
+                            <h4>{teacher?.name} {teacher?.surname}'s classes</h4>
                             {
-                                schoolClasses?.map(schoolClass => (
-                                    <div key={schoolClass.id}>
-                                        <Card id={schoolClass.id} title={schoolClass.name}
-                                            goToDetailsHandler={toSchoolClassDetails} /></div>
+                                schoolClasses.length > 0 ? <>
+                                    {
+                                        schoolClasses?.map(schoolClass => (
+                                            <div key={schoolClass.id}>
+                                                <Card id={schoolClass.id} title={schoolClass.name}
+                                                    goToDetailsHandler={toSchoolClassDetails} /></div>
 
-                                ))
+                                        ))
+                                    }
+                                </> :
+                                    <Alert message="this teacher takes no classes" />
                             }
-                        </> :
-                            <Alert message="this teacher takes no classes" />
-                    }
 
-                </div>
-            </div>
-            <div>
+                        </div>
+                    </div>
+                </>
+            }
 
-            </div>
         </BoxedPage>
     );
 }

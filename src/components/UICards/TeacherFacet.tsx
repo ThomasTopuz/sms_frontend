@@ -17,7 +17,7 @@ const TeacherFacet: React.FC<props> = ({ teacher }) => {
         <div className="rounded bg-white shadow-lg">
             <Button onClick={toDetails} icon="pi pi-arrow-right" className="m-1 p-button-drounded p-button-primary p-button-text float-right" />
             <div className="p-3">
-                <p>{teacher.name} {teacher.surname}, {teacher.age}</p>
+                <p className="font-weight-bold">{teacher.name} {teacher.surname}, {teacher.age}</p>
                 <p>{teacher.email}</p>
             </div>
         </div>

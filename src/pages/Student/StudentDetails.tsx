@@ -63,50 +63,47 @@ const StudentDetails: React.FC = () => {
     }
     return (
         <BoxedPage isLoading={isLoading}>
+            {
+                !isLoading && <div className={""}>
+                    <div className="bg-white shadow rounded">
+                        <div className="float-right flex-row m-2">
+                            <EditToggleButton isEditing={editMode} toggleMode={toggleEditMode} />
+                            <DeleteButton deleteHandler={deleteStudent} />
+                        </div>
 
-            <div className={""}>
-                <div className="bg-white shadow rounded">
-                    <div className="float-right flex-row m-2">
-                        <EditToggleButton isEditing={editMode} toggleMode={toggleEditMode} />
-                        <DeleteButton deleteHandler={deleteStudent} />
+                        <div className={"row justify-content-center text-center pt-4 pb-4 "}>
+                            {!editMode ?
+                                <div>
+                                    <h2>{student?.name} {student?.surname}</h2>
+                                    <hr />
+                                    <h4>{student?.email}</h4>
+                                    <h6>Date of birth: {student?.dob}, Age: {student?.age}</h6>
+                                </div>
+                                :
+                                <EditPersonForm person={student!} onSubmit={onEditStudentFormSubmit} />
+                            }
+                        </div>
                     </div>
 
-                    <div className={"row justify-content-center text-center pt-4 pb-4 "}>
-                        {!editMode ?
-                            <div>
-                                <h2>{student?.name} {student?.surname}</h2>
-                                <hr />
-                                <h4>{student?.email}</h4>
-                                <h6>Date of birth: {student?.dob}, Age: {student?.age}</h6>
-                            </div>
-                            :
-                            <EditPersonForm person={student!} onSubmit={onEditStudentFormSubmit} />
+                    <div className={"row mt-5 flex-column"}>
+                        <h4>{student?.name} {student?.surname}'s classes</h4>
+                        {
+                            schoolClasses.length > 0 ? <>
+                                {
+                                    schoolClasses?.map(schoolClasses => (
+                                        <div key={schoolClasses.id}>
+                                            <Card id={schoolClasses.id} title={schoolClasses.name}
+                                                goToDetailsHandler={toSchoolClassDetails} />
+                                        </div>
+                                    ))
+
+                                }
+                            </> :
+                                <Alert message="this student has no classes" />
                         }
                     </div>
                 </div>
-
-                <div className={"row mt-5 flex-column"}>
-                    <h4>{student?.name} {student?.surname}'s classes</h4>
-                    {
-                        schoolClasses.length > 0 ? <>
-                            {
-                                schoolClasses?.map(schoolClasses => (
-                                    <div key={schoolClasses.id}>
-                                        <Card id={schoolClasses.id} title={schoolClasses.name}
-                                            goToDetailsHandler={toSchoolClassDetails} />
-                                    </div>
-                                ))
-
-                            }
-                        </> :
-                            <Alert message="this student has no classes" />
-                    }
-
-                </div>
-            </div>
-            <div>
-
-            </div>
+            }
         </BoxedPage>
     );
 }
